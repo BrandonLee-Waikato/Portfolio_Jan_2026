@@ -61,23 +61,33 @@ export const SplashScreen = ({ children }: { children: React.ReactNode }) => {
         <>
             <AnimatePresence mode="wait">
                 {isLoading && (
-                    <motion.div
-                        className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#d6efd8] w-screen h-screen"
-                        initial={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <div className="scale-[2.5]"> {/* Magnify loader */}
-                            <SVGLoader />
-                        </div>
-                    </motion.div>
+                    <>
+                        {/* Sliding Background */}
+                        <motion.div
+                            className="fixed inset-0 z-[9998] bg-[#d6efd8] w-screen h-screen"
+                            initial={{ x: 0 }}
+                            exit={{ x: "100%" }}
+                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                        />
+                        {/* Static Loader Text (Fades out) */}
+                        <motion.div
+                            className="fixed inset-0 z-[9999] flex items-center justify-center w-screen h-screen pointer-events-none"
+                            initial={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <div className="scale-[2.5]">
+                                <SVGLoader />
+                            </div>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
 
             <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: isLoading ? 0 : 1 }}
-                transition={{ duration: 0.8 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }} // Fade in content slightly after wiper starts
             >
                 {!isLoading && children}
             </motion.div>
